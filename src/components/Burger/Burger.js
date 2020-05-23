@@ -4,7 +4,6 @@ import Burgeringredient from './BurgerIngredient/BurgerIngredient';
 const burger = (props) => {
 	let transformedingredients = Object.keys(props.ingredients)
 		.map((igKey) => {
-			console.log(igKey);
 			return [ ...Array(props.ingredients[igKey]) ].map((_, i) => {
 				//Loop the values of the object
 				return <Burgeringredient type={igKey} key={igKey + i} />;
