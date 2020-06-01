@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import classes from '../BurgerIngredient/BurgerIngredient.module.css';
 import PropTypes from 'prop-types';
-import Aux from '../../../hoc/Aux';
 
 class Burgeringredient extends Component {
 	render() {
