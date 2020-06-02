@@ -15,6 +15,7 @@ const order = (props) => {
 					border: '2px solid #ccc',
 					padding: '5px'
 				}}
+				key={ig.name}
 			>
 				{ig.name}({ig.amount}){' '}
 			</span>
