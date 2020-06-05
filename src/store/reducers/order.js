@@ -33,7 +33,22 @@ const reduser = (state = initalState, action) => {
 				...state,
 				loading: false
 			};
-
+		case actionTypes.FAILED_FETCH_DATA:
+			return {
+				...state,
+				loading: false
+			};
+		case actionTypes.FETCH_ORDER_DATA_SUCCESS:
+			return {
+				...state,
+				orders: action.orders,
+				loading: false
+			};
+		case actionTypes.FETCH_ORDER_DATA_START:
+			return {
+				...state,
+				loading: true
+			};
 		default:
 			return state;
 	}
