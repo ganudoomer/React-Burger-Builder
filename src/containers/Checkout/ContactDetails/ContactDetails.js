@@ -72,7 +72,8 @@ class Contact extends Component {
 				},
 				value: '',
 				validation: {
-					required: true
+					required: true,
+					isEmail: true
 				},
 				valid: false,
 				touch: false
@@ -108,6 +109,11 @@ class Contact extends Component {
 		if (rules.maxLength) {
 			isVaild = value.length <= rules.maxLength && isVaild;
 		}
+		if (rules.isEmail) {
+			const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+			isVaild = pattern.test(value) && isVaild;
+		}
+
 		return isVaild;
 	}
 	onClickHandle = (event) => {

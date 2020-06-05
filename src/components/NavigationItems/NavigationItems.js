@@ -7,6 +7,7 @@ const navItems = (props) => (
 			Burger Builder
 		</NavItem>
 		<NavItem link="/orders">Orders</NavItem>
+		<NavItem link="/authenticate">Authenticate</NavItem>
 	</ul>
 );
 export default navItems;
