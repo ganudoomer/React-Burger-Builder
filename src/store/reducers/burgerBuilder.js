@@ -1,6 +1,6 @@
 import * as actionTypes from '../actions/actionTypes';
 import { updateObject } from '../utility';
-import { setIngredients } from '../actions/burgerBuilder';
+
 const intialState = {
 	ingredients: null,
 	totalprice: 40,
