@@ -7,6 +7,7 @@ import Input from '../../../components/UI/Input/Input';
 import { connect } from 'react-redux';
 import withError from '../../../hoc/withErrorHandler/withErrorHandler';
 import * as actionCreator from '../../../store/actions/index';
+import { updateObject, checkVaild } from '../../../shared/utility';
 class Contact extends Component {
 	state = {
 		orderform: {
@@ -95,27 +96,7 @@ class Contact extends Component {
 		loading: false,
 		formIsvaild: false
 	};
-	checkVaild(value, rules) {
-		if (!rules) {
-			return true;
-		}
-		let isVaild = true;
-		if (rules.required) {
-			isVaild = value.trim() !== '' && isVaild;
-		}
-		if (rules.minLength) {
-			isVaild = value.length >= rules.minLength && isVaild;
-		}
-		if (rules.maxLength) {
-			isVaild = value.length <= rules.maxLength && isVaild;
-		}
-		if (rules.isEmail) {
-			const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-			isVaild = pattern.test(value) && isVaild;
-		}
 
-		return isVaild;
-	}
 	onClickHandle = (event) => {
 		event.preventDefault(); //PREVENT FROM FROM LOADING
 		const formData = {};
@@ -131,14 +112,15 @@ class Contact extends Component {
 		this.props.onOrderBurger(order, this.props.auth);
 	};
 	onChnageHandler = (event, formId) => {
-		const updateForm = {
-			...this.state.orderform
-		};
-		const updateElement = { ...updateForm[formId] };
-		updateElement.value = event.target.value;
-		updateElement.valid = this.checkVaild(updateElement.value, updateElement.validation);
-		updateElement.touch = true;
-		updateForm[formId] = updateElement;
+		const updateElement = updateObject(this.state.orderform[formId], {
+			value: event.target.value,
+			valid: checkVaild(event.target.value, this.state.orderform[formId].validation),
+			touch: true
+		});
+		const updateForm = updateObject(this.state.orderform, {
+			[formId]: updateElement
+		});
+
 		let formIsvaild = true;
 		for (let identifer in updateForm) {
 			formIsvaild = updateForm[identifer].valid && formIsvaild;

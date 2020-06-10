@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import * as action from '../../store/actions/index';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import { Redirect } from 'react-router-dom';
+import { updateObject, checkVaild } from '../../shared/utility';
 class Auth extends Component {
 	state = {
 		controls: {
@@ -47,36 +48,14 @@ class Auth extends Component {
 		}
 	}
 
-	checkVaild(value, rules) {
-		if (!rules) {
-			return true;
-		}
-		let isVaild = true;
-		if (rules.required) {
-			isVaild = value.trim() !== '' && isVaild;
-		}
-		if (rules.minLength) {
-			isVaild = value.length >= rules.minLength && isVaild;
-		}
-		if (rules.maxLength) {
-			isVaild = value.length <= rules.maxLength && isVaild;
-		}
-		if (rules.isEmail) {
-			const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
-			isVaild = pattern.test(value) && isVaild;
-		}
-		return isVaild;
-	}
 	onChnageHandler = (event, controlName) => {
-		const updatedControl = {
-			...this.state.controls,
-			[controlName]: {
-				...this.state.controls[controlName],
+		const updatedControl = updateObject(this.state.controls, {
+			[controlName]: updateObject(this.state.controls[controlName], {
 				value: event.target.value,
-				valid: this.checkVaild(event.target.value, this.state.controls[controlName].validation),
+				valid: checkVaild(event.target.value, this.state.controls[controlName].validation),
 				touch: true
-			}
-		};
+			})
+		});
 		this.setState({ controls: updatedControl });
 	};
 	onSubmitHandler = (event) => {

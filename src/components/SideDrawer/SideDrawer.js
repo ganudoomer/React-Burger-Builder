@@ -12,7 +12,7 @@ const sidedrawer = (props) => {
 	return (
 		<Aux>
 			<DropBox show={props.show} close={props.closeSide} />
-			<div className={conditionClass.join(' ')}>
+			<div className={conditionClass.join(' ')} onClick={props.closeSide}>
 				<div className={classes.Logo}>
 					<Logo />
 				</div>
