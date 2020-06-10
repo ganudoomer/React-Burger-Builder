@@ -20,8 +20,32 @@ export const authFail = (error) => {
 	};
 };
 
+export const logout = () => {
+	localStorage.removeItem('token');
+	localStorage.removeItem('userId');
+	localStorage.removeItem('expDate');
+
+	return {
+		type: actionTypes.AUTH_LOGOUT
+	};
+};
+
+export const authTimeOut = (expTime) => {
+	return (dispatch) => {
+		setTimeout(() => {
+			dispatch(logout());
+		}, expTime * 1000);
+	};
+};
+
+export const authRedirect = (path) => {
+	return {
+		type: actionTypes.AUTH_REDIRECT,
+		path: path
+	};
+};
+
 export const auth = (email, password, isSignUp) => {
-	console.log('auth');
 	return (dispatch) => {
 		dispatch(authStart());
 		const authData = {
@@ -38,12 +62,36 @@ export const auth = (email, password, isSignUp) => {
 		axios
 			.post(url, authData)
 			.then((response) => {
-				console.log(response.data.idToken, response.data.localId);
+				const expDate = new Date(new Date().getTime() + response.data.expiresIn * 1000);
+				localStorage.setItem('expDate', expDate);
+				localStorage.setItem('token', response.data.idToken);
+				localStorage.setItem('userId', response.data.localId);
+
 				dispatch(authSuccess(response.data.idToken, response.data.localId));
+				dispatch(authTimeOut(response.data.expiresIn));
 			})
 			.catch((err) => {
-				console.log(err);
-				dispatch(authFail(err));
+				dispatch(authFail(err.response.data.error.message));
 			});
+	};
+};
+export const returnConsole = () => {
+	console.log('working');
+};
+export const authStateChecker = () => {
+	return (dispatch) => {
+		const token = localStorage.getItem('token');
+		if (!token) {
+			dispatch(logout());
+		} else {
+			const expDate = new Date(localStorage.getItem('expDate'));
+			if (expDate <= new Date()) {
+				dispatch(logout());
+			} else {
+				const userId = localStorage.getItem('userId');
+				dispatch(authSuccess(token, userId));
+				dispatch(authTimeOut((expDate.getTime() - new Date().getTime()) / 1000));
+			}
+		}
 	};
 };

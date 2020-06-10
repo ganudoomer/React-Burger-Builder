@@ -125,9 +125,10 @@ class Contact extends Component {
 		const order = {
 			ingredients: this.props.ings,
 			price: this.props.tpr,
-			orderForm: formData
+			orderForm: formData,
+			userId: this.props.userId
 		};
-		this.props.onOrderBurger(order);
+		this.props.onOrderBurger(order, this.props.auth);
 	};
 	onChnageHandler = (event, formId) => {
 		const updateForm = {
@@ -189,12 +190,14 @@ const mapStateToProps = (state) => {
 	return {
 		ings: state.burgerBuilder.ingredients,
 		tpr: state.burgerBuilder.totalprice,
-		loading: state.order.loading
+		loading: state.order.loading,
+		auth: state.auth.token,
+		userId: state.auth.userId
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onOrderBurger: (orderData) => dispatch(actionCreator.purchaseBurger(orderData))
+		onOrderBurger: (orderData, auth) => dispatch(actionCreator.purchaseBurger(orderData, auth))
 	};
 };
 export default connect(mapStateToProps, mapDispatchToProps)(withError(Contact, axios));

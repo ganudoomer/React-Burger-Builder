@@ -6,8 +6,13 @@ const navItems = (props) => (
 		<NavItem link="/" exact>
 			Burger Builder
 		</NavItem>
-		<NavItem link="/orders">Orders</NavItem>
-		<NavItem link="/authenticate">Authenticate</NavItem>
+		{props.isAuthenticated ? <NavItem link="/orders">Orders</NavItem> : null}
+
+		{props.isAuthenticated ? (
+			<NavItem link="/logout">Logout</NavItem>
+		) : (
+			<NavItem link="/authenticate">Authenticate</NavItem>
+		)}
 	</ul>
 );
 export default navItems;

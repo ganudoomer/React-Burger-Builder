@@ -8,7 +8,7 @@ import * as actionCretors from '../../store/actions/index';
 
 class Orders extends Component {
 	componentDidMount() {
-		this.props.onFetchOrder();
+		this.props.onFetchOrder(this.props.auth, this.props.userId);
 	}
 	render() {
 		let order = this.props.orders.map((order) => (
@@ -23,12 +23,14 @@ class Orders extends Component {
 const mapStateToProps = (state) => {
 	return {
 		orders: state.order.orders,
-		loading: state.order.loading
+		loading: state.order.loading,
+		auth: state.auth.token,
+		userId: state.auth.userId
 	};
 };
 const mapDispatchToProps = (dispatch) => {
 	return {
-		onFetchOrder: () => dispatch(actionCretors.fetchOrder())
+		onFetchOrder: (auth, userId) => dispatch(actionCretors.fetchOrder(auth, userId))
 	};
 };
 
