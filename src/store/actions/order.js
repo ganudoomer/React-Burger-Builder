@@ -1,6 +1,5 @@
 import * as actionTypes from './actionTypes';
 import axios from '../../axios-order';
-import Auth from '../../containers/Auth/Auth';
 
 export const purchaseSucess = (id, orderData) => {
 	return {
@@ -28,7 +27,6 @@ export const purchaseBurger = (orderData, auth) => {
 		axios
 			.post('/order.json?auth=' + auth, orderData)
 			.then((response) => {
-				console.log(response.data);
 				dispatch(purchaseSucess(response.data.name, orderData));
 			})
 			.catch((error) => {

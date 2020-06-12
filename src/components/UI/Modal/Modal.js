@@ -3,9 +3,6 @@ import classes from './Modal.module.css';
 import Aux from '../../../hoc/Aux';
 import DropBox from '../DropBox/DropBox';
 class Modal extends Component {
-	componentWillUpdate() {
-		console.log('[Modal] did Update');
-	}
 	//Performance Improvement
 	shouldComponentUpdate(nextProps, nextState) {
 		return nextProps.show !== this.props.show || nextProps.children !== this.props.children;
